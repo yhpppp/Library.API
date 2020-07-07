@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Library.API.Entities;
 using Library.API.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -29,6 +31,12 @@ namespace Library.API
         {
             services.AddScoped<IAuthorRepository, AuthorMockRepository>();
             services.AddScoped<IBookRepository, BookMockRepository>();
+
+            services.AddDbContext<LibraryDbContext>(option =>
+            {
+                option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            });
+
 
             services.AddMvc(config =>
             {
