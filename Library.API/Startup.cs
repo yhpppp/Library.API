@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Library.API.Entities;
+using Library.API.Filters;
 using Library.API.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,6 +33,8 @@ namespace Library.API
         {
             //services.AddScoped<IAuthorRepository, AuthorMockRepository>();
             //services.AddScoped<IBookRepository, BookMockRepository>();
+                                          services.AddScoped<CheckAuthorExistFilterAttribute>();
+            services.AddAutoMapper(typeof(Startup));
 
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
 

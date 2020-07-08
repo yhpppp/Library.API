@@ -8,7 +8,7 @@ namespace Library.API.Services
 {
     public class RepositoryWrapper : IRepositoryWrapper
     {
-        private IAuthorRepository _authorRepository = null;
+        private  IAuthorRepository _authorRepository = null;
 
         private IBookRepository _bookRepository = null;
         public LibraryDbContext LibraryDbContext { get; }

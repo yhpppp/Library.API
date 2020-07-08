@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Library.API.Services
 {
-    interface IRepositoryWrapper
+    public interface IRepositoryWrapper
     {
         IBookRepository Book { get; }
         IAuthorRepository Author { get; }
