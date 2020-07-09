@@ -48,6 +48,7 @@ namespace Library.API
 
             services.AddMvc(config =>
             {
+                config.Filters.Add<JsonExceptionFilter>();
                 config.ReturnHttpNotAcceptable = true;
                 //config.OutputFormatters.Add(new XmlSerializerOutputFormatter());
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
