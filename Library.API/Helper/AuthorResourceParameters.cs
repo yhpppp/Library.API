@@ -18,5 +18,7 @@ namespace Library.API.Helper
                 _pageSize = (value > MaxPageSize) ? MaxPageSize : value;
             }
         }
+        public string BirthPlace { get; set; }
+        public string SearchQuery { get; set; }
     }
 }
