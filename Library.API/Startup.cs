@@ -16,6 +16,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using NLog.Extensions.Logging;
+using NLog.Web;
 
 namespace Library.API
 {
@@ -33,7 +35,7 @@ namespace Library.API
         {
             //services.AddScoped<IAuthorRepository, AuthorMockRepository>();
             //services.AddScoped<IBookRepository, BookMockRepository>();
-                                          services.AddScoped<CheckAuthorExistFilterAttribute>();
+            services.AddScoped<CheckAuthorExistFilterAttribute>();
             services.AddAutoMapper(typeof(Startup));
 
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
@@ -53,7 +55,7 @@ namespace Library.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -64,7 +66,8 @@ namespace Library.API
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+            loggerFactory.AddNLog();
+            env.ConfigureNLog("nlog.config");
             app.UseHttpsRedirection();
             app.UseMvc();
         }

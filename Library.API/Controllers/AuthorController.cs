@@ -4,6 +4,7 @@ using Library.API.Helper;
 using Library.API.Models;
 using Library.API.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -20,12 +21,13 @@ namespace Library.API.Controllers
 
         public IMapper Mapper { get; }
         public IRepositoryWrapper RepositoryWrapper { get; }
+        public ILogger<AuthorController> Logger { get; }
 
-
-        public AuthorController(IRepositoryWrapper repositoryWrapper, IMapper mapper)
+        public AuthorController(IRepositoryWrapper repositoryWrapper, IMapper mapper, ILogger<AuthorController> logger)
         {
             RepositoryWrapper = repositoryWrapper;
             Mapper = mapper;
+            Logger = logger;
         }
 
         [HttpPost()]
