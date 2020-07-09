@@ -20,5 +20,6 @@ namespace Library.API.Helper
         }
         public string BirthPlace { get; set; }
         public string SearchQuery { get; set; }
+        public string SortBy { get; set; } = "Name";
     }
 }
