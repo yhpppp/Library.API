@@ -1,4 +1,5 @@
 ﻿using Library.API.Entities;
+using Library.API.Helper;
 using Library.API.Models;
 using System;
 using System.Collections.Generic;
@@ -17,5 +18,6 @@ namespace Library.API.Services
         //void AddAuthor(AuthorDto author);
 
         //void DeleteAuthor(AuthorDto author);
+        Task<PagedList<Author>> GetAllAsync(AuthorResourceParameters parameters);
     }
 }

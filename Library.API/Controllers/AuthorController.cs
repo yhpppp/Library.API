@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Library.API.Entities;
+using Library.API.Helper;
 using Library.API.Models;
 using Library.API.Services;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -75,14 +77,31 @@ namespace Library.API.Controllers
             var authorDto = Mapper.Map<AuthorDto>(author);
             return authorDto;
         }
-
-        [HttpGet()]
-        public async Task<ActionResult<IEnumerable<AuthorDto>>> GetAuthorsAsync()
+        // 获取所有作者信息
+        [HttpGet(Name = nameof(GetAuthorsAsync))]
+        public async Task<ActionResult<IEnumerable<AuthorDto>>> GetAuthorsAsync(
+      [FromQuery] AuthorResourceParameters parameters)
         {
-            var authors = (await RepositoryWrapper.Author.GetAllAsync())
-                .OrderBy(author => author.Name);
-
-            var authorDtoList = Mapper.Map<IEnumerable<AuthorDto>>(authors);
+            var pagedList = await RepositoryWrapper.Author.GetAllAsync(parameters);
+            var paginationMetadata = new
+            {
+                totalCount = pagedList.TotalCount,
+                pageSize = pagedList.PageSize,
+                currentPage = pagedList.CurrentPage,
+                totalPages = pagedList.TotalPages,
+                previousePageLink = pagedList.HasPrevious ? Url.Link(nameof(GetAuthorsAsync), new
+                {
+                    pageNumber = pagedList.CurrentPage - 1,
+                    pageSize = pagedList.PageSize
+                }) : null,
+                nextPageLink = pagedList.HasNext ? Url.Link(nameof(GetAuthorsAsync), new
+                {
+                    pageNumber = pagedList.CurrentPage + 1,
+                    pageSize = pagedList.PageSize
+                }) : null
+            };
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(paginationMetadata));
+            var authorDtoList = Mapper.Map<IEnumerable<AuthorDto>>(pagedList);
             return authorDtoList.ToList();
         }
     }
